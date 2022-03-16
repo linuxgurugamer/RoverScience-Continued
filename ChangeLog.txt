@@ -1,0 +1,158 @@
+Changelog
+
+TODO
+
+2.3.5.1 Alpha
+	Adoption by Linuxgurugamer
+	Added license file
+	Copied Imgur files into readme directory
+	Added support for ASET ERS
+	Added support for the Feline Utility Rovers
+	Added support for Pathfinder
+	Added support for Phoenix Industries ARES Rover
+	Added support for The Martian for KSP (updated version of the Phoenix Industries mod)
+	Converted tga to dds
+	Deleted MiniAVC.dll
+	Created Plugins directory
+	Added code to hide on F2
+	Added code to hide on pause
+	Added AssemblyVersion.tt
+	Added InstallChecker.cs
+	Replaced Debug.Log with SpaceTuxLibrary Log library calls
+	Added settings page to control log level
+	Added ClickThroughBlocker support
+	Updated GetUpgradeValue() to  use values stored in arrays instead of multiple if statements
+	Updated GetUpgradeCost() to  use values stored in arrays instead of multiple if statements
+	Revamped display of potential science inspired bu suggestions from @EppyMoon:
+
+			Where:
+				rnd is a random number between 0 and 1
+				value is the actual value
+				confidence is  the confidence of the prediction based on the level of the sensors
+
+	            predictedValue = value * (1 - (1 - confidence) * rnd) + (1 - confidence) * (500 * rnd - 250)
+
+				Look up the predictedValue in the following table:
+
+					400-500+	VeryHigh
+					200-400		High
+					70-200		Normal
+					30-70		Low
+					< 30		VeryLow
+2.3.5.2 Alpha
+	Fixed displayed science dome location jumping when the rover got too far away (about 400-500m)
+    Replaced all  marker.GetComponent<MeshRenderer>() with a single call when marker is created
+	Replaced all "foreach" with "for"
+	Fixed check for wheel count to look for string "wheel" instead of ModuleSheelBase
+	Disabled analyze button if vessel/rover is moving
+
+2.3.5.3
+	Fixed nullrefs in editor
+	Moved initialization of GUIStyles from the ConsoleGUI to Static, now only get initialized once. Fixes memory leak and improves performance
+	Added settings for maxspeed and requireWheelsToTouch
+	Added warning of approaching max speed
+	Fixed upgrades not being saved properly
+	Changed method for fixing the science dome location
+	Added Scaled Science, calculated when game first starts, adjustable in Settings
+	Added ScaledDetection, calculated when game first starts, adjustable in Settings
+	Fixed spot being displayed at altitude
+	Added scaledScienceOccurrance
+	Added minDistanceBetweenData
+	Added new sayings for random text
+	Fixed localization of the Science Too Low string
+
+2.3.5.4
+	RemoteTech patch added
+
+TODO
+	Add detection of ROCS & Craters
+	Localize new text strings
+	Rename mod
+
+reloaded
+renavigated
+
+
+==========================================================================
+
+Following changelog compiled by @lisias
+
+* 2018-0330: 2.3.5 (Aelfheim) for KSP 1.4.1
+	+ recompile for KSP 1.4.x
+* 2017-1010: 2.3.3 (Aelfheim) for KSP 1.3.1
+	+ Recompile for KSP 1.3.1 (*not compatible with earlier versions*)
+	+ German translation by [Three_Pounds](https://forum.kerbalspaceprogram.com/index.php?/profile/116058-three_pounds/)
+	+ Minor changes to logging. Fewer messages unless "verbose logging" is enabled in system settings.
+	+ Minor code refactoring and code style updates.
+* 2017-0709: 2.3.2 (Aelfheim) for KSP 1.3.0
+	+ Spanish translation by [fitiales](http://forum.kerbalspaceprogram.com/index.php?/profile/66011-fitiales/)
+	+ Read anomaly information directly from game database rather than config file. Should support dynamic and mod added anomalies.
+	+ Module Manager patch to add RoverBrain module to popular rover cabs without the need to attach the separate part.
+	+ Known Issues:
+			- Trying to open the rover terminal while there are two (or more) vessels with rover brains in physics range causes exception spam
+			- Drawing of  science spots (red domes) is sometimes a bit glitchy. Can usually be fixed by switching to another vessel (or Space Centre) and then back again.
+			- Upgrade and anomalies scanned information is not always reliably written to save file.
+* 2017-0704: 2.3.1 (Aelfheim) for KSP 1.3
+	+ Add support for localization (only en-us supplied by default)
+	+ Clicking "Upgrade menu" button in sandbox mode no longer throws NRE spam.
+	+ Update AVC version file to point to this repository
+* 2017-0704: 2.3.0 (Aelfheim) for KSP 1.3
+	+ Compatibility update for KSP 1.3
+* 2016-1014: 2.2.0-A1 (theSpeare) for KSP 1.2.1 PRE-RELEASE
+	+ RoverScience should be compatible for KSP1.2 now. Fixed all the issues with values not being saved/loaded, but it's all pretty shaky coding so (as I've said on the forums) I'm going to rewrite this mod from the ground up now. Should make it easier for others to understand the code and also (if anyone ever wanted to) take over in the future.
+	+ THIS IS A PRE-RELEASE ALPHA. I've tested it and nothing seems to break the game (running without RoverScience, running with RoverScience part), but I need help confirming this before I push an official release out to SpaceDock and CKAN and such.
+	+ Any help is greatly appreciated.
+* 2016-1106: 2.2.0 (theSpeare) for KSP 1.2.1
+	+ compatibility with KSP 1.2.1
+* 2016-0925: 2.1.4 (theSpeare) for KSP 1.1.3
+	+ New part models
+	+ Model and texturing by KSPForum @akron. Wonderful work and wonderful guy. Thanks!
+		- [Image](http://i.imgur.com/gZFbkjC.png)
+			- MiniAVC Implementation
+	+ Added MiniAVC support. Will compare with GitHub pushed version file.
+			- Initial Minor Balancing Pass
+			- Changed so that amount of times analyzed does not increase for generated science that is too low. There will be more balancing to come as discussion continues in the forum page.
+* 2016-0919: 2.1.3 (theSpeare) for KSP 1.1.3
+	+ 17 should now be fully fixed. Furthermore, saving/loading should be fine now.
+	+ No more coding to be done until KSP1.2 is fully out, as I'm a bit tired of having to keep adapting between both versions. Will refactor as soon as I update for KSP1.2.
+	+ Next update will only be for a new part model.
+* 2016-0915: 2.1.2 (theSpeare) for KSP 1.1.3
+	+ Made GUI prettier. Now with colours and revised text to improve
+	+ understandability.
+	+ Added new upgrade: "analyzedDecay". Upgrading this will increase the
+	+ number of times a player may analyze before suffering science loss.
+	+ Quickloading and quicksaving will now restore window positions. GUI
+	+ position and display status is now saved in persistence & quicksave.
+* 2016-0913: 2.1 (theSpeare) for KSP 1.1.3
+	+ Interesting Rocks
+	+ Rock models are now spawned at Science Spots. Two different models are included; more will be added later. Credit to udk_lethal_dose for the idea. Textures are a bit big; will look at compressing these further.
+	+ Anomalies
+	+ Anomalies are now recognized! Credit to etmoonshade for the idea.
+	+ ScienceSpots will generate at anomalies once rovers are within 100m and no other scienceSpots are active.
+	+ Anomalies provide a flat 300 science points (500, if you're lucky). However you can only analyze an anomaly ONCE.
+	+ Most anomalies have been charted, except for two Duna ones that do not
+	+ appear above ground anymore.
+	+ Go send your rovers out to those anomalies!
+* 2016-0910: 2.0.4 (theSpeare) for KSP 1.1.3
+	+ fixed: fixed previous code that had an "if Instance=null". It is now
+		- Instance == null" because I am an idiot. This was a mod-breaking issue,
+	+ so hopefully GUI should be working now!
+			- learned how to raycast to get surface altitude, reverted back to
+			- sphere marker as it waaaaaay good
+* 2016-0908: 2.0.3 (theSpeare) for KSP 1.1.3 PRE-RELEASE
+	+ An attempted fix as detailed on issue #1.
+	+ (from release 2.0.2) major feature:
+	+ Been wanting to do this for awhile!
+	+ Science spot location is now rendered by a capsule marker. The marker will reduce in size and alpha as the player vessel nears. I will be able to remove the old crappy compass mechanic. See gfy below for example.
+	+ https://gfycat.com/EverlastingParchedAmericancicada
+* 2016-0908: 2.0.2 (theSpeare) for KSP 1.1.3 PRE-RELEASE
+	+ Been wanting to do this for awhile!
+	+ Science spot location is now rendered by a capsule marker. The marker will reduce in size and alpha as the player vessel nears. I will be able to remove the old crappy compass mechanic. See gfy below for example.
+	+ https://gfycat.com/EverlastingParchedAmericancicada
+* 2016-0907: 2.0.1 (theSpeare) for KSP 1.1.3 PRE-RELEASE
+	+ now checks for modules containing "wheel", rather than matching exact
+	+ WheelModule names
+	+ migrated saving method to use KSPScenario rather than an independent
+	+ save file. Should work between quicksaves/loads now
+* 2016-0905: 2.0.0 (theSpeare) for KSP 1.1.3 PRE-RELEASE
+	+ Compatibility patching for 1.0+ Kerbal Space Program. No new features or major changes.
