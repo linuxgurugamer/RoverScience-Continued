@@ -68,6 +68,7 @@ TODO
 	Added option to show/hide science dome
 	Made rock colliders, defaulted to active
 	Added option to disable rock colliders
+	Added detection of ROCs and Craters (only active with Serenity)
 
 
 TODO
