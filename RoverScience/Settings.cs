@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections;
 using System.Reflection;
+using KSP.Localization;
 
 using static RoverScience.InitLog;
 
@@ -17,10 +18,10 @@ namespace RoverScience
 
     public class RSSettings : GameParameters.CustomParameterNode
     {
-        public override string Title { get { return "Default Settings"; } }
+        public override string Title { get { return "Rover Science"; } } // Localizer.GetStringByTag("LOC_RoverScience_GUI_DefaultSettings") ; } }
         public override GameParameters.GameMode GameMode { get { return GameParameters.GameMode.ANY; } }
-        public override string Section { get { return "Rover Science"; } }
-        public override string DisplaySection { get { return "Rover Science"; } }
+        public override string Section { get { return "Rover Science"; } } // Localizer.GetStringByTag("LOC_RoverScience_GUI_RoverScience"); } }
+        public override string DisplaySection { get { return "Rover Science"; } } //  Localizer.GetStringByTag("LOC_RoverScience_GUI_RoverScience") ; } }
         public override int SectionOrder { get { return 1; } }
         public override bool HasPresets { get { return false; } }
 
@@ -28,25 +29,36 @@ namespace RoverScience
         //public bool useKSPskin = true;
 
 
-        [GameParameters.CustomParameterUI("Require wheels to be touching the ground",
-            toolTip ="At least one wheel will need to be touching the ground for the sensors to be active")]
+        [GameParameters.CustomFloatParameterUI("Require wheels to be touching the ground",
+            toolTip = "At least one wheel will need to be touching the ground for the sensors to be active")]
         public bool requireWheelTouching = true;
 
         [GameParameters.CustomFloatParameterUI("Maximum speed where sensors are active", minValue = 5f, maxValue = 40f, stepCount = 351, displayFormat = "F1")]
         public float maxSpeed = 10f;
 
 
-        [GameParameters.CustomFloatParameterUI("Scaled Detection Distance", minValue = 1f, maxValue = 10f, stepCount = 101, displayFormat = "F1")]
+        [GameParameters.CustomFloatParameterUI("Scaled Detection Distance", minValue = 1f, maxValue = 10f, stepCount = 101, displayFormat = "F1",
+            toolTip = "Maximum detection distance is multiplied by this scale")]
         public float scaledDetectionDistance = 0f;
 
-        [GameParameters.CustomFloatParameterUI("Scaled Science", minValue = 1f, maxValue = 10f, stepCount = 101, displayFormat = "F1")]
+        [GameParameters.CustomFloatParameterUI("Scaled Science", minValue = 1f, maxValue = 10f, stepCount = 101, displayFormat = "F1",
+            toolTip = "Science rewards is multiplied by this value")]
         public float scaledScience = 0f;
 
-        [GameParameters.CustomFloatParameterUI("Scaled Science Occurrance", minValue = 1f, maxValue = 10f, stepCount = 101, displayFormat = "F1")]
+        [GameParameters.CustomFloatParameterUI("Scaled Science Occurrance", minValue = 1f, maxValue = 10f, stepCount = 101, displayFormat = "F1",
+            toolTip = "Frequency of occurrance is multiplied by this (higher means more distance between occurrances)")]
         public float scaledScienceOccurrance = 0f;
 
         [GameParameters.CustomFloatParameterUI("Minimum distance between science points", minValue = 500f, maxValue = 20000f, stepCount = 19501, displayFormat = "F0")]
         public float minDistanceBetweenData = 500f;
+
+        [GameParameters.CustomParameterUI("Show Science dome",
+            toolTip = "Show the red dome highlighting where science is located")]
+        public bool showScienceDome = true;
+
+        [GameParameters.CustomParameterUI("Rock collidier active",
+            toolTip = "When true, the rocks are hard")]
+        public bool rockCollider = true;
 
 
 
@@ -94,7 +106,8 @@ namespace RoverScience
             if (oOff != off)
             {
                 oOff = off;
-                /* error = warning = */ info = detail = /*trace = */ false;
+                /* error = warning = */
+                info = detail = /*trace = */ false;
             }
             else
 #if false

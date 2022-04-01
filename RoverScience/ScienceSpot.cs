@@ -170,14 +170,20 @@ namespace RoverScience
         // If the roll is successful establish a science spot
         public void CheckAndSet()
         {
+            int currentLevel = roverScience.GetUpgradeLevel(RSUpgrade.maxDistance);
+            var maxDistance = roverScience.GetUpgradeValue(RSUpgrade.maxDistance, currentLevel);
+
             // Once distance traveled passes the random check distance
-            if ((Rover.DistanceToClosestAnomaly <= 100) && (!Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed()))
+            if ((Rover.DistanceToClosestAnomaly <= maxDistance) && (!Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed()))
             {
-                SetLocation(Rover.closestAnomaly.location.longitude, Rover.closestAnomaly.location.latitude, anomaly: true);
+                SetLocation(3, Rover.closestAnomaly.location.longitude, Rover.closestAnomaly.location.latitude, anomaly: true);
                 Rover.ResetDistanceTraveled();
-
-
             }
+            else if (ROC_Class.SerenityLoaded && (Rover.DistanceToClosestROC <= maxDistance) && (!ROC_Class.HasCurrentROCBeenAnalyzed()))
+            {
+                SetLocation(4, Rover.closestROC.location.longitude, Rover.closestROC.location.latitude, anomaly: true);
+                Rover.ResetDistanceTraveled();
+            }            
             else if (Rover.distanceTraveled >= HighLogic.CurrentGame.Parameters.CustomParams<RSSettings>().minDistanceBetweenData * Rover.distanceCheck)
             {   
 
@@ -212,7 +218,7 @@ namespace RoverScience
                 if ((double)rNum <= 25) //chance)
                 {
                     Rover.ResetDistanceTraveled();
-                    SetLocation(random: true);
+                    SetLocation(5, random: true);
                     Log.Detail("setLocation");
 
                     RoverScienceGUI.ClearConsole();
@@ -264,11 +270,11 @@ namespace RoverScience
         }
 
         // Method to set location
-        public void SetLocation(double longitude = 0, double latitude = 0, bool random = false, bool anomaly = false)
+        public void SetLocation(int from, double longitude = 0, double latitude = 0, bool random = false, bool anomaly = false)
         {
             // generate random radius for where to spot placement
             // bool random will override whatever is entered
-
+            Log.Info("SetLocation, from: " + from);
             if (!random)
             {
                 location.latitude = latitude;

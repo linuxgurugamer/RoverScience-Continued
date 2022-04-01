@@ -72,7 +72,6 @@
     <Compile Include="RandomConsolePrints.cs" />
     <Compile Include="ConsoleGUI.cs" />
     <Compile Include="RoverScienceScenario.cs" />
-    <Compile Include="RoverScienceParameters.cs" />
     <Compile Include="ScienceSpot.cs" />
     <Compile Include="DebugGUI.cs" />
     <Compile Include="RSUpgrade.cs" />

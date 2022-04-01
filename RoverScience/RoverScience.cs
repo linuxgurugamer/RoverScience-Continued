@@ -1,5 +1,6 @@
 using KSP.Localization;
 using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using static RoverScience.InitLog;
@@ -138,12 +139,30 @@ namespace RoverScience
             GameEvents.onGameUnpause.Add(onShowUI);
 
             InvokeRepeating("UpdateMarkerPositionInvoked", 0.1f, 0.1f);
+            if (ROC_Class.SerenityLoaded)
+                StartCoroutine(ScheduleClosestROCCheck());
         }
 
+        IEnumerator ScheduleClosestROCCheck()
+        {
+            Log.Info("ScheduleClosestROCCheck");
+            while (!ROC_Class.gridDataInitted)
+            {
+                Log.Info("ScheduleClosestROCCheck 1 sec delay");
+
+                yield return new WaitForSeconds(1f);
+            }
+            rover.SetClosestROC();
+            yield return null;
+        }
+        
 #if true
+        /// <summary>
+        /// Updates the marker location 10x/sec, called by InvokeRepeatig
+        /// </summary>
         void UpdateMarkerPositionInvoked()
         {
-            if (HighLogic.LoadedSceneIsFlight)
+            if (HighLogic.LoadedSceneIsFlight && DrawWaypoint.Instance.InterestingObjectExists)
                 DrawWaypoint.Instance.SetMarkerLocation(RoverScience.Instance.rover.scienceSpot.location.longitude, RoverScience.Instance.rover.scienceSpot.location.latitude, spawningObject: false, update:true);
         }
 #endif
@@ -227,7 +246,7 @@ namespace RoverScience
                     if (DB != null) DB.UpdateRoverScience();
 
                     rover.SetClosestAnomaly();
-
+                    rover.SetClosestROC();
 
                 }
                 else
@@ -324,10 +343,21 @@ namespace RoverScience
                 {
                     Log.Detail("analyzed science at anomaly");
 
-                    if (!rover.anomaliesAnalyzed.Contains(rover.closestAnomaly.id))
+                    if (!RoverScienceScenario.anomaliesAnalyzed.Contains(rover.closestAnomaly.id))
                     {
-                        rover.anomaliesAnalyzed.Add(rover.closestAnomaly.id);
+                        RoverScienceScenario.anomaliesAnalyzed.Add(rover.closestAnomaly.id);
                         Log.Detail($"added anomaly id: {rover.closestAnomaly.id} to save!");
+                    }
+
+                }
+                else if (rover.ROCSpotReached)
+                {
+                    Log.Detail("analyzed science at ROC");
+
+                    if (!RoverScienceScenario.ROCsAnalyzed.Contains(rover.closestROC.id.ToString()))
+                    {
+                        RoverScienceScenario.ROCsAnalyzed.Add(rover.closestROC.id.ToString());
+                        Log.Detail($"added ROC id: {rover.closestROC.id} to save!");
                     }
 
                 }

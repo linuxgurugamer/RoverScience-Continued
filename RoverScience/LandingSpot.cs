@@ -9,18 +9,18 @@ namespace RoverScience
         public bool established = false;
         public Coords location = new Coords();
         public System.Random rand = new System.Random();
-		RoverScience roverScience = null;
+        RoverScience roverScience = null;
 
-		public LandingSpot (RoverScience roverScience)
-		{
-				this.roverScience = roverScience;
-		}
+        public LandingSpot(RoverScience roverScience)
+        {
+            this.roverScience = roverScience;
+        }
 
         public Rover Rover
         {
             get
             {
-				return roverScience.rover;
+                return roverScience.rover;
             }
         }
 
@@ -47,28 +47,30 @@ namespace RoverScience
             if (!established)
             {
                 // SET LANDING SITE
-	                if (Rover.NumberWheelsLanded > 0)
-	                {
-	                    // set x by y position
-	                    location.longitude = Vessel.longitude;
-                        location.latitude = Vessel.latitude;
+                if (Rover.NumberWheelsLanded > 0)
+                {
+                    // set x by y position
+                    location.longitude = Vessel.longitude;
+                    location.latitude = Vessel.latitude;
 
-	                    Rover.ResetDistanceTraveled();
+                    Rover.ResetDistanceTraveled();
 
-	                    established = true;
+                    established = true;
 
-                        Log.Detail("Landing site has been established!");
+                    Log.Detail("Landing site has been established!");
 
-                        Rover.SetClosestAnomaly();
-	                }
-			
+                    Rover.SetClosestAnomaly();
+                    Rover.SetClosestROC();
+
+                }
+
             }
             else
             {
                 // RESET LANDING SITE
-                if ((Rover.NumberWheelsLanded == 0) && (Vessel.heightFromTerrain > 10)) 
+                if ((Rover.NumberWheelsLanded == 0) && (Vessel.heightFromTerrain > 10))
                     Reset();
-			}
+            }
         }
 
         public void Reset()

@@ -32,13 +32,6 @@ namespace RoverScience
             }
         }
 
-        //public int levelMaxDistance = 1;
-        //public int levelPredictionAccuracy = 1;
-        //public int levelAnalyzedDecay = 2;
-
-        //public List<string> console_x_y_show = new List<string>();
-        //public List<string> anomaliesAnalyzed = new List<string>();
-
         public void UpdateRoverScience()
         {
             Log.Info("UpdateRoverScience, levelMaxDistance: " + RoverScienceScenario.levelMaxDistance + ", levelPredictionAccuracy: " + RoverScienceScenario.levelPredictionAccuracy + ", levelAnalyzedDecay: " + RoverScienceScenario.levelAnalyzedDecay);
@@ -57,7 +50,7 @@ namespace RoverScience
                 {
                     Log.Error($"Error while parsing {RoverScienceScenario.console_x_y_show}", e);
                 }
-                RoverScience.rover.anomaliesAnalyzed = RoverScienceScenario.anomaliesAnalyzed;
+                //RoverScienceScenario.anomaliesAnalyzed = RoverScienceScenario.anomaliesAnalyzed;
                 Log.Detail("Successfully updated RoverScience");
             }
         }
@@ -75,8 +68,8 @@ namespace RoverScience
             RoverScienceScenario.console_x_y_show.Add(GUI.consoleGUI.rect.y.ToString());
             RoverScienceScenario.console_x_y_show.Add(GUI.consoleGUI.isOpen.ToString());
 
-            RoverScienceScenario.anomaliesAnalyzed = RoverScience.rover.anomaliesAnalyzed;
-            Log.Detail("roverScience.rover.anomaliesAnalyzed: " + RoverScience.rover.anomaliesAnalyzed);
+            //RoverScienceScenario.anomaliesAnalyzed = RoverScience.rover.anomaliesAnalyzed;
+            Log.Detail("roverScience.rover.anomaliesAnalyzed: " + RoverScienceScenario.anomaliesAnalyzed);
 
             Log.Detail("Successfully updated DB");
         }
@@ -90,6 +83,7 @@ namespace RoverScience
             ds += "\nlevelAnalyzedDecay: " + RoverScienceScenario.levelAnalyzedDecay;
             ds += "\nconsole_x_y_show: " + string.Join(",", RoverScienceScenario.console_x_y_show.ToArray());
             ds += "\nanomaliesAnalyzed: " + string.Join(",", RoverScienceScenario.anomaliesAnalyzed.ToArray());
+            ds += "\nROCsAnalyzed: " + string.Join(",", RoverScienceScenario.ROCsAnalyzed.ToArray());
             ds += "\n======================================";
             Log.Detail(ds);
         }

@@ -46,7 +46,7 @@ namespace RoverScience
         {
             Log.Info("RoverScienceGUI started");
             consoleGUI.rect.width = 250;
-            debugGUI.rect.width = 230;
+            debugGUI.rect.width = 400;
             upgradeGUI.rect.width = 500;
 
             // center consoleGUI

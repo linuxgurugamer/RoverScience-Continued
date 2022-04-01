@@ -61,17 +61,30 @@ TODO
 	Added new sayings for random text
 	Fixed localization of the Science Too Low string
 
-2.3.5.4
+2.3.5.4 
 	RemoteTech patch added
+	Changed RandomConsolePrintOuts to loop through the random saying instead of individual lines
+	Localized new strings, translations done using Google Translate
+	Added option to show/hide science dome
+	Made rock colliders, defaulted to active
+	Added option to disable rock colliders
+
 
 TODO
-	Add detection of ROCS & Craters
+			reset closest ROC periodictly
+
 	Localize new text strings
 	Rename mod
 
 reloaded
 renavigated
-
+Can I suggest "Re-grounded" or "Reexploring" for the undecided part of the mod name
+Grounded Science
+Re-Flipped lol
+Third Wheel/ Third Rove (Since a "Re-visited" exists)
+Re-Spirited (see: "Spirit" (MER-2) )
+Rover Science - Roll and Rock
+Rover Science Re-Mobilized
 
 ==========================================================================
 

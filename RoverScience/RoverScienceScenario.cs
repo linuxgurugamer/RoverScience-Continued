@@ -21,7 +21,7 @@ namespace RoverScience
 
         public static List<string> console_x_y_show = new List<string>();
         public static List<string> anomaliesAnalyzed = new List<string>();
-
+        public static List<string> ROCsAnalyzed = new List<string>();
         public override void OnLoad(ConfigNode node)
         {
             //if (RoverScience.Instance == null) return; // do not do if RoverScience not do
@@ -33,7 +33,7 @@ namespace RoverScience
             //ConsoleGUI = RoverScience.Instance.roverScienceGUI.consoleGUI;
 
             LoadAnomaliesAnalyzed(node); // load anomalies
-            
+            LoadROCsAnalyzed(node);
 
             // LEVELMAXDISTANCE
             if (node.HasValue("levelMaxDistance"))
@@ -89,6 +89,7 @@ namespace RoverScience
             Log.Info("RoverScienceScenario OnSave @" + DateTime.Now);
 
             SaveAnomaliesAnalyzed(node);
+            SaveROCsAnalyzed(node);
 
             node.SetValue("levelMaxDistance", levelMaxDistance.ToString(), true);
             node.SetValue("levelPredictionAccuracy", levelPredictionAccuracy.ToString(), true);
@@ -106,15 +107,43 @@ namespace RoverScience
                 if (anomaliesAnalyzed.Count > 1)
                 {
                     node.SetValue("anomalies_visited_id", string.Join(",", anomaliesAnalyzed.ToArray()), true);
-                } else
+                }
+                else
                 {
                     node.SetValue("anomalies_visited_id", anomaliesAnalyzed[0], true);
                 }
-            } else
+            }
+            else
             {
                 Log.Detail("no anomalies id to save");
             }
         }
+
+
+        public void SaveROCsAnalyzed(ConfigNode node)
+        {
+            Log.Info("Attempting to save ROCs analyzed");
+
+            if (ROCsAnalyzed.Count > 0)
+            {
+                if (ROCsAnalyzed.Count > 1)
+                {
+                    node.SetValue("rocs_visited_id", string.Join(",", ROCsAnalyzed.ToArray()), true);
+                }
+                else
+                {
+                    node.SetValue("rocs_visited_id", ROCsAnalyzed[0], true);
+                }
+            }
+            else
+            {
+                Log.Detail("no ROCs id to save");
+            }
+        }
+
+
+
+
 
         public void LoadAnomaliesAnalyzed(ConfigNode node)
         {
@@ -122,17 +151,17 @@ namespace RoverScience
             {
                 string loadedString = node.GetValue("anomalies_visited_id");
                 anomaliesAnalyzed = new List<string>(loadedString.Split(','));
-                
+
                 Log.Detail("loadedString: " + loadedString);
                 for (int s1 = 0; s1 < anomaliesAnalyzed.Count; s1++)
                 {
                     string s = anomaliesAnalyzed[s1];
-                
+
                     Log.Detail("ID: " + s);
                 }
                 Log.Detail("Anomalies LOAD END");
                 //RoverScienceDB.Instance.anomaliesAnalyzed = this.anomaliesAnalyzed; // load in new values in anomalies
-                
+
             }
             else
             {
@@ -140,5 +169,34 @@ namespace RoverScience
             }
 
         }
+        public void LoadROCsAnalyzed(ConfigNode node)
+        {
+            if (node.HasValue("rocs_visited_id"))
+            {
+                string loadedString = node.GetValue("rocs_visited_id");
+                ROCsAnalyzed = new List<string>(loadedString.Split(','));
+
+                Log.Detail("loadedString: " + loadedString);
+                for (int s1 = 0; s1 < ROCsAnalyzed.Count; s1++)
+                {
+                    string s = ROCsAnalyzed[s1];
+
+                    Log.Detail("ROC ID: " + s);
+                }
+                Log.Detail("ROCs LOAD END");
+
+            }
+            else
+            {
+                Log.Detail("No ROCs have been analyzed");
+            }
+
+        }
+
+
+
+        
+
+
     }
 }

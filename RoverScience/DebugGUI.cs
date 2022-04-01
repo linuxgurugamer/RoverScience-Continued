@@ -41,28 +41,40 @@ namespace RoverScience
             GUILayout.Label("Closest Anomaly Name: " + roverScience.rover.closestAnomaly.name);
             GUILayout.Label("Has current anomaly been analyzed? " + "[" + Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed() + "]");
 
+			if (ROC_Class.SerenityLoaded)
+			{
+				if (roverScience.rover.closestROC == null)
+				{
+					GUILayout.Label("No ROCs found");
+				}
+				else
+				{
+					GUILayout.Label("Closest ROC ID: " + roverScience.rover.closestROC.id);
+					GUILayout.Label("Closest ROC Name: " + roverScience.rover.closestROC.name);
+					GUILayout.Label("Has current ROC been analyzed? " + "[" + ROC_Class.HasCurrentROCBeenAnalyzed() + "]");
+				}
+			}
 
-
-            GUILayout.BeginHorizontal();
+			GUILayout.BeginHorizontal();
             anomalyVisitedAdd = GUILayout.TextField(anomalyVisitedAdd, 3, new GUILayoutOption[] { GUILayout.Width(50) });
             if (GUILayout.Button("add anomaly ID"))
             {
-                Rover.anomaliesAnalyzed.Add(anomalyVisitedAdd);
+				RoverScienceScenario.anomaliesAnalyzed.Add(anomalyVisitedAdd);
             }
             if (GUILayout.Button("X"))
             {
-                Rover.anomaliesAnalyzed.Clear();
+				RoverScienceScenario.anomaliesAnalyzed.Clear();
             }
             GUILayout.EndHorizontal();
-            GUILayout.Label("anomaly id visited: " + string.Join(",", Rover.anomaliesAnalyzed.ToArray()));
+            GUILayout.Label("anomaly id visited: " + string.Join(",", RoverScienceScenario.anomaliesAnalyzed.ToArray()));
 
 			if (GUILayout.Button ("Find Science Spot")) {
-				Rover.scienceSpot.SetLocation (random: true);
+				Rover.scienceSpot.SetLocation (1, random: true);
 			}
 
             if (GUILayout.Button ("Cheat Spot Here")) {
 				if ((!Rover.scienceSpot.established) && (consoleGUI.isOpen)) {
-					Rover.scienceSpot.SetLocation (Vessel.longitude, Vessel.latitude);
+					Rover.scienceSpot.SetLocation (2, Vessel.longitude, Vessel.latitude);
 				} else if (Rover.scienceSpot.established){
 					Rover.scienceSpot.Reset ();
 				}

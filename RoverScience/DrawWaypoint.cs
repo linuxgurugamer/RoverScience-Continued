@@ -23,10 +23,10 @@ namespace RoverScience
         float minAlpha = 0.05f;
 
         public static DrawWaypoint Instance = null;
-        Color markerRed= Color.red;
+        Color markerRed = Color.red;
         Color markerGreen = Color.green;
 
-        string[] rockObjectNames = {"rock", "rock2"};
+        string[] rockObjectNames = { "rock", "rock2" };
 
         private void Start()
         {
@@ -56,14 +56,19 @@ namespace RoverScience
             Log.Detail("Reached end of marker creation");
         }
 
+        public bool InterestingObjectExists { get { return interestingObject != null; } }
         public void DestroyInterestingObject()
         {
+            Log.Info("DestoryInterestingObject");
             if (interestingObject != null) Destroy(interestingObject);
+            interestingObject = null;
         }
 
-        public void SetMarkerLocation(double longitude, double latitude, bool spawningObject = true, bool update=false)
+        public void SetMarkerLocation(double longitude, double latitude, bool spawningObject = true, bool update = false)
         {
-            DestroyInterestingObject();
+            Log.Info("SetMarkerLocation, spawningObject: " + spawningObject + ", update: " + update);
+            if (spawningObject)
+                DestroyInterestingObject();
 
             Vector3 bottomPoint = FlightGlobals.currentMainBody.GetWorldSurfacePosition(latitude, longitude, 0);
             Vector3 topPoint = FlightGlobals.currentMainBody.GetWorldSurfacePosition(latitude, longitude, 1000);
@@ -81,7 +86,8 @@ namespace RoverScience
 
                 //attempt to get raycast surface altitude
 
-                if (spawningObject) SpawnObject(longitude, latitude);
+                if (spawningObject)
+                    SpawnObject(longitude, latitude);
             }
         }
 
@@ -95,7 +101,9 @@ namespace RoverScience
             if (up)
             {
                 return topPoint - bottomPoint;
-            } else {
+            }
+            else
+            {
                 return bottomPoint - topPoint;
             }
 
@@ -110,7 +118,8 @@ namespace RoverScience
             if (Physics.Raycast(topPoint, (bottomPoint - topPoint), out RaycastHit hit, Mathf.Infinity, 1 << 15))
             {
                 return (altitude - hit.distance);
-            } else
+            }
+            else
             {
                 Log.Detail("No surface intersect detected!");
             }
@@ -118,26 +127,33 @@ namespace RoverScience
             return -1;
         }
 
+        bool markerShouldBeVisible = false;
         public void ShowMarker()
         {
             if (RoverScience.Instance.rover.scienceSpot.established)
             {
-                markerRenderer.enabled = true;
+                if (HighLogic.CurrentGame.Parameters.CustomParams<RSSettings>().showScienceDome)
+                {
+                    markerRenderer.enabled = true;
+                }
+                markerShouldBeVisible = true;
             }
         }
 
         public void HideMarker()
         {
             markerRenderer.enabled = false;
+            markerShouldBeVisible = false;
         }
 
         public void ToggleMarker()
         {
 
-            if (!markerRenderer.enabled)
+            if (!markerShouldBeVisible)
             {
                 ShowMarker();
-            } else
+            }
+            else
             {
                 HideMarker();
             }
@@ -152,7 +168,7 @@ namespace RoverScience
             // min distance 3
             // +2 = 5
             // will keep reducing size as long as distance is over 5
-            if ((distanceToRover < markerSizeMax) && ((distanceToRover > (rover.scienceSpot.minDistance+4))))
+            if ((distanceToRover < markerSizeMax) && ((distanceToRover > (rover.scienceSpot.minDistance + 4))))
             {
                 // Reduce sphere size with proximity
                 markerSize = distanceToRover;
@@ -163,7 +179,8 @@ namespace RoverScience
                 if (markerAlpha >= maxAlpha)
                 {
                     markerAlpha = maxAlpha;
-                } else if (markerAlpha <= minAlpha)
+                }
+                else if (markerAlpha <= minAlpha)
                 {
                     markerAlpha = minAlpha;
                 }
@@ -178,8 +195,12 @@ namespace RoverScience
             if ((distanceToRover <= (rover.scienceSpot.minDistance)) && (distanceToRover >= 0))
             {
                 markerRenderer.material.color = markerGreen;
-            } else {
+                markerRenderer.enabled = true;
+            }
+            else
+            {
                 markerRenderer.material.color = markerRed;
+                markerRenderer.enabled = HighLogic.CurrentGame.Parameters.CustomParams<RSSettings>().showScienceDome;
             }
 
         }
@@ -191,29 +212,55 @@ namespace RoverScience
             {
                 Log.Detail("Attempting to spawn object");
                 string randomRockName = rockObjectNames[rand.Next(rockObjectNames.Length)];
-                GameObject test = GameDatabase.Instance.GetModel("RoverScience/rock/" + randomRockName);
+
+                GameObject rock = GameDatabase.Instance.GetModel("RoverScience/rock/" + randomRockName);
                 Log.Detail("Random rock name: " + randomRockName);
-                test.SetActive(true);
+                rock.SetActive(true);
 
-                interestingObject = GameObject.Instantiate(test) as GameObject;
-                GameObject.Destroy(test);
+                interestingObject = GameObject.Instantiate(rock) as GameObject;
+                interestingObject.transform.localScale = Vector3.one * (float)(1f + rand.NextDouble());
+                GameObject.Destroy(rock);
 
-                GameObject.Destroy(interestingObject.GetComponent("MeshCollider"));
+                if (!HighLogic.CurrentGame.Parameters.CustomParams<RSSettings>().rockCollider)
+                {
+                    var mc = interestingObject.GetComponentInChildren<MeshCollider>();
+                    if (mc != null)
+                        mc.enabled = false;
+                    else
+                        Log.Info("SpawnObject, MeshCollider not found");
+
+
+                    var c = interestingObject.GetComponentInChildren<Collider>();
+                    if (c != null)
+                        c.enabled = false;
+                    else
+                        Log.Info("SpawnObject, Collider not found");
+                }
+
+
                 double srfAlt = DrawWaypoint.Instance.GetSurfaceAltitude(longitude, latitude);
                 interestingObject.transform.position = FlightGlobals.currentMainBody.GetWorldSurfacePosition(latitude, longitude, srfAlt);
                 Log.Info("SpawnObject: latitude: " + latitude + ", longitude: " + longitude + ", surfaceAltitude: " + srfAlt);
 
                 interestingObject.transform.up = GetUpDown(longitude, latitude, true);
-            } catch (Exception e)
+
+#if false
+                if (interestingObject.GetComponent<MeshRenderer>() != null)
+                    interestingObject.GetComponent<MeshRenderer>().enabled = true;
+                else
+                    Log.Info("SpawnObject, MeshRenderer not found");
+#endif
+            }
+            catch (Exception e)
             {
-                Log.Info($"Exception: Spawn object failed: {e.Message}");
+                Log.Info($"SpawnObject Exception: Spawn object failed: {e.Message}");
                 Log.Info(e.StackTrace);
             }
         }
-        
+
         private void Update()
         {
-            if (markerRenderer.enabled)
+            if (markerShouldBeVisible)
             {
                 ChangeSpherewithDistance(RoverScience.Instance.rover);
             }

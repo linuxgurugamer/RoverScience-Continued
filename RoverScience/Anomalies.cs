@@ -22,7 +22,8 @@ namespace RoverScience
             // surface altitude is determined by DrawWaypoint
         }
 
-        public Anomalies()
+        //public Anomalies()
+        public void Start()
         {
             Instance = this;
             LoadAnomalies();
@@ -32,7 +33,7 @@ namespace RoverScience
         {
             Rover rover = RoverScience.Instance.rover;
             string closestAnomalyID = rover.closestAnomaly.id;
-            if (rover.anomaliesAnalyzed.Contains(closestAnomalyID))
+            if (RoverScienceScenario.anomaliesAnalyzed.Contains(closestAnomalyID))
             {
                 return true;
             } else

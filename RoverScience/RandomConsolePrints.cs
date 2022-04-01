@@ -22,7 +22,12 @@ namespace RoverScience
 
 			public RandomConsolePrintOuts()
 			{
-                strings.Add(Localizer.GetStringByTag("#LOC_RoverScience_GUI_Random1")); // "Nothing seems to be here");
+				for (int i = 1; i <20; i++)
+                {
+					strings.Add(Localizer.GetStringByTag("#LOC_RoverScience_GUI_Random"+i.ToString()));
+                }
+#if false
+				strings.Add(Localizer.GetStringByTag("#LOC_RoverScience_GUI_Random1")); // "Nothing seems to be here");
 				strings.Add(Localizer.GetStringByTag("#LOC_RoverScience_GUI_Random2")); // "Running scans, checking");
 				strings.Add(Localizer.GetStringByTag("#LOC_RoverScience_GUI_Random3")); // "Weak signals of interest");
 				strings.Add(Localizer.GetStringByTag("#LOC_RoverScience_GUI_Random4")); // "Defragmenting - maybe that will help");
@@ -41,7 +46,8 @@ namespace RoverScience
 				strings.Add("Look at me still roving when there's science to do...");
 				strings.Add("Are we there yet?");
 				strings.Add("One little mistake");
-
+				strings.Add("Can you test me now?");
+#endif
 			}
 
 		}

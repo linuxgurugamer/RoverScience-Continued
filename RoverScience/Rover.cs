@@ -1,5 +1,7 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 using static RoverScience.InitLog;
 
 
@@ -23,8 +25,14 @@ namespace RoverScience
         public int minRadius = 40;
         public int maxRadius = 100;
 
-        public List<string> anomaliesAnalyzed = new List<string>();
+       // public List<string> anomaliesAnalyzed = new List<string>();
+        //public List<int> ROCsAnalyzed = new List<int>();
+
         public Anomalies.Anomaly closestAnomaly = new Anomalies.Anomaly();
+        public ROC_Class.SCANROC closestROC = null;
+        public List<ROC_Class.SCANROC> closestUnanalyzedROCs = new List<ROC_Class.SCANROC>();
+        const double CLOSE_RANGE = 10000f;
+
 
         public double DistanceFromLandingSpot
             => GeomLib.GetDistanceBetweenTwoPoints(Vessel.mainBody, location, landingSpot.location);
@@ -44,6 +52,9 @@ namespace RoverScience
         public double BearingToScienceSpot
             => GeomLib.GetBearingFromCoords(scienceSpot.location, location);
 
+        public double BearingToROC
+            => GeomLib.GetBearingFromCoords(closestROC.location, location);
+
         Vessel Vessel => FlightGlobals.ActiveVessel;
 
         public double Heading => GeomLib.GetRoverHeading(Vessel);
@@ -56,6 +67,14 @@ namespace RoverScience
 
         public bool AnomalyPresent
             => ((DistanceToClosestAnomaly <= 100) && !Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed());
+
+        public bool ROCSpotReached
+    => (scienceSpot.established && DistanceToClosestROC <= scienceSpot.minDistance);
+
+        public bool ROCPresent
+            => ((DistanceToClosestROC <= 100) && !ROC_Class.HasCurrentROCBeenAnalyzed());
+
+
 
         public int NumberWheelsLanded => GetWheelsLanded();
 
@@ -75,6 +94,22 @@ namespace RoverScience
                     Log.Detail("Vessel == null in DistanceToClosestAnomaly");
 
                 return GeomLib.GetDistanceBetweenTwoPoints(Vessel.mainBody, location, closestAnomaly.location);
+            }
+        }
+
+        public double DistanceToClosestROC
+        {
+            get
+            {
+                if (location == null)
+                    Log.Detail("location == null in DistanceToClosestROC");
+                if (closestROC == null)
+                    Log.Detail("closestROC == null in DistanceToClosestROC");
+                if (Vessel == null)
+                    Log.Detail("Vessel == null in DistanceToClosestROC");
+                if (closestROC == null)
+                    return 999999f;
+                return GeomLib.GetDistanceBetweenTwoPoints(Vessel.mainBody, location, closestROC.location);
             }
         }
 
@@ -156,8 +191,17 @@ namespace RoverScience
 
             SetRoverLocation(); // (update rover location)
             closestAnomaly = Anomalies.Instance.ClosestAnomaly(Vessel, Vessel.mainBody.bodyName);
-
         }
+
+        public void SetClosestROC()
+        {
+            // this is run on establishing landing spot (to avoid expensive constant foreach loops
+
+            SetRoverLocation(); // (update rover location)
+            closestUnanalyzedROCs = ROC_Class.ClosestROCs(Vessel, CLOSE_RANGE, out closestROC);
+             //closestROC = ROC_Class.ClosestROC(Vessel, closestROC);
+       }
+
 
     }
 
