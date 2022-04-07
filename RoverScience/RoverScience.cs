@@ -22,13 +22,15 @@ namespace RoverScience
 
         // Not necessarily updated per build. Mostly updated per major commits
         public readonly string RSVersion = typeof(RoverScience).Assembly.GetName().Version.ToString();
-        public static RoverScience Instance = null;
-        public static CelestialBody HomeWorld;
+        //public  RoverScience Instance = null;
+        public  CelestialBody HomeWorld;
 
         public System.Random rand = new System.Random();
         public ModuleScienceContainer container;
         public ModuleCommand command;
         public Rover rover;
+
+        public DrawWaypoint drawWaypoint;
 
         public int levelMaxDistance = 1;
         public int levelPredictionAccuracy = 1;
@@ -59,7 +61,7 @@ namespace RoverScience
         }
 
 
-        public RoverScienceGUI roverScienceGUI = new RoverScienceGUI();
+        public RoverScienceGUI roverScienceGUI;
         public double distCounter;
 
         [KSPField(isPersistant = true)]
@@ -72,7 +74,7 @@ namespace RoverScience
             {
                 if (HighLogic.LoadedSceneIsFlight)
                 {
-                    return FlightGlobals.ActiveVessel;
+                return vessel;
                 }
                 else
                 {
@@ -121,7 +123,7 @@ namespace RoverScience
         private void ShowGUI()
         {
             roverScienceGUI.consoleGUI.Toggle();
-            DrawWaypoint.Instance.ToggleMarker();
+            drawWaypoint.ToggleMarker();
         }
 
         [KSPAction("#LOC_RoverScience_GUI_ActivateConsole", actionGroup = KSPActionGroup.None)] // Activate Console
@@ -133,7 +135,13 @@ namespace RoverScience
 
         public void Start()
         {
-            GameEvents.onHideUI.Add(onHideUI);
+            Log.Info("RoverScience.Start, vessel: " + this.vessel.id);
+            if (HighLogic.LoadedSceneIsFlight)
+            {
+                drawWaypoint = new DrawWaypoint(this);
+                roverScienceGUI = new RoverScienceGUI(this);
+            }
+             GameEvents.onHideUI.Add(onHideUI);
             GameEvents.onShowUI.Add(onShowUI);
             GameEvents.onGamePause.Add(onHideUI);
             GameEvents.onGameUnpause.Add(onShowUI);
@@ -143,6 +151,11 @@ namespace RoverScience
                 StartCoroutine(ScheduleClosestROCCheck());
         }
 
+        public void Update()
+        {
+            if (HighLogic.LoadedSceneIsFlight && drawWaypoint != null)
+                drawWaypoint.Update();
+        }
         IEnumerator ScheduleClosestROCCheck()
         {
             Log.Info("ScheduleClosestROCCheck");
@@ -162,8 +175,8 @@ namespace RoverScience
         /// </summary>
         void UpdateMarkerPositionInvoked()
         {
-            if (HighLogic.LoadedSceneIsFlight && DrawWaypoint.Instance.InterestingObjectExists)
-                DrawWaypoint.Instance.SetMarkerLocation(RoverScience.Instance.rover.scienceSpot.location.longitude, RoverScience.Instance.rover.scienceSpot.location.latitude, spawningObject: false, update:true);
+            if (HighLogic.LoadedSceneIsFlight && drawWaypoint.InterestingObjectExists)
+                drawWaypoint.SetMarkerLocation(rover.scienceSpot.location.longitude, rover.scienceSpot.location.latitude, spawningObject: false, update:true);
         }
 #endif
 
@@ -174,6 +187,8 @@ namespace RoverScience
             GameEvents.onShowUI.Remove(onShowUI);
             GameEvents.onGamePause.Remove(onHideUI);
             GameEvents.onGameUnpause.Remove(onShowUI);
+            if (HighLogic.LoadedSceneIsFlight)
+                drawWaypoint.OnDestroy();
         }
         bool hideUI = false;
         void onHideUI()
@@ -193,12 +208,12 @@ namespace RoverScience
         public override void OnLoad(ConfigNode vesselNode)
         {
             Log.Detail("#X1 RoverScience OnLoad @" + DateTime.Now);
-            Instance = this;
+            //Instance = this;
 
             if (rover == null)
             {
                 Log.Detail("rover was null, creating new rover class (OnLoad)");
-                rover = new Rover();
+                rover = new Rover(this);
             }
             if (DB != null) DB.UpdateRoverScience();
 
@@ -216,11 +231,11 @@ namespace RoverScience
             {
                 if (IsPrimary)
                 {
-                    Log.Info("Initiated! Version: " + RSVersion);
+                    Log.Info("Initiated! Version: " + RSVersion + ", vessel: " + this.vessel.id); 
 
-                    Instance = this;
+                    //Instance = this;
 
-                    Log.Detail("RS Instance set - " + Instance);
+                    //Log.Detail("RS Instance set - " + Instance);
 
                     HomeWorld = FlightGlobals.Bodies.Where(cb => cb.isHomeWorld).First(); // TODO: move this somewhere more appropriate
 
@@ -231,10 +246,10 @@ namespace RoverScience
                     if (rover == null)
                     {
                         Log.Detail("rover was null, creating new rover class (OnStart)");
-                        rover = new Rover();
+                        rover = new Rover(this);
                     }
-                    rover.scienceSpot = new ScienceSpot(Instance);
-                    rover.landingSpot = new LandingSpot(Instance);
+                    rover.scienceSpot = new ScienceSpot(this);
+                    rover.landingSpot = new LandingSpot(this);
 
                     if (rover.scienceSpot.potential != ScienceSpot.Potentials.anomaly)
                         rover.scienceSpot.adjustedPotentialGenerated = AdjustedPotentialGenerated();
@@ -251,15 +266,17 @@ namespace RoverScience
                 }
                 else
                 {
-                    Log.Info("ONSTART - Not primary");
+                    Log.Info("ONSTART - Not primary, vessel: " + this.vessel.id);
                 }
 
                 // HACK: instance null unexpected.
+#if false
                 if (Instance == null)
                 {
                     Instance = this;
                     Log.Info("Instance was null; workaround fix by declaring Instance anyway");
                 }
+#endif
             }
 
         }
@@ -269,7 +286,7 @@ namespace RoverScience
 
         string AdjustedPotentialGenerated()
         {
-            double confidence = RoverScience.Instance.CurrentPredictionAccuracy;
+            double confidence = CurrentPredictionAccuracy;
             var value = rover.scienceSpot.potentialScience;
             var rnd = rand.NextDouble();
 
@@ -758,7 +775,7 @@ namespace RoverScience
                 if (Input.GetKey(KeyCode.LeftControl) && Input.GetKey(KeyCode.R) && Input.GetKeyUp(KeyCode.S))
                 {
                     roverScienceGUI.consoleGUI.Toggle();
-                    DrawWaypoint.Instance.ToggleMarker();
+                    drawWaypoint.ToggleMarker();
                 }
 
                 // DEBUG WINDOW

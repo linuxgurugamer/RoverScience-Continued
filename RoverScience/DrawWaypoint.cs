@@ -6,8 +6,8 @@ namespace RoverScience
 {
     // All code taken from Waypoint Manager mod
     // Still in experimental as I try to figure out what I'm doing here
-    [KSPAddon(KSPAddon.Startup.Flight, false)]
-    public class DrawWaypoint : MonoBehaviour
+ //   [KSPAddon(KSPAddon.Startup.Flight, false)]
+    public class DrawWaypoint //: MonoBehaviour
     {
         System.Random rand = new System.Random();
 
@@ -22,22 +22,24 @@ namespace RoverScience
         float maxAlpha = 0.4f;
         float minAlpha = 0.05f;
 
-        public static DrawWaypoint Instance = null;
+        //public static DrawWaypoint Instance = null;
         Color markerRed = Color.red;
         Color markerGreen = Color.green;
 
         string[] rockObjectNames = { "rock", "rock2" };
 
-        private void Start()
+        RoverScience parentRoverScience;
+        public  DrawWaypoint(RoverScience rs) // Start()
         {
+            parentRoverScience = rs;
             Log.Detail("Attempting to create scienceSpot sphere");
-            Instance = this;
+            //Instance = this;
 
 
             marker = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             //marker.transform.parent = FlightGlobals.ActiveVessel.mainBody.transform;
 
-            Destroy(marker.GetComponent("SphereCollider"));
+            GameObject.Destroy(marker.GetComponent("SphereCollider"));
             // Set initial position
             //marker.transform.localScale = new Vector3(markerSize, markerSize, markerSize);
             marker.transform.localScale = new Vector3(markerSize, markerSize, markerSize);
@@ -60,7 +62,7 @@ namespace RoverScience
         public void DestroyInterestingObject()
         {
             Log.Info("DestoryInterestingObject");
-            if (interestingObject != null) Destroy(interestingObject);
+            if (interestingObject != null) GameObject.Destroy(interestingObject);
             interestingObject = null;
         }
 
@@ -130,13 +132,25 @@ namespace RoverScience
         bool markerShouldBeVisible = false;
         public void ShowMarker()
         {
-            if (RoverScience.Instance.rover.scienceSpot.established)
+            var m = parentRoverScience;
+            if (m != null)
             {
-                if (HighLogic.CurrentGame.Parameters.CustomParams<RSSettings>().showScienceDome)
+
+                if (m == null)
+                    Log.Error("ShowMarker, RoverScience.Instance is null");
+                if (m.rover == null)
+                    Log.Error("ShowMarker, RoverScience.Instance.rover is null");
+                if (m.rover.scienceSpot == null)
+                    Log.Error("ShowMarker, RoverScience.Instance.rover.scienceSpot is null");
+
+                if (m.rover.scienceSpot != null && m.rover.scienceSpot.established)
                 {
-                    markerRenderer.enabled = true;
+                    if (HighLogic.CurrentGame.Parameters.CustomParams<RSSettings>().showScienceDome)
+                    {
+                        markerRenderer.enabled = true;
+                    }
+                    markerShouldBeVisible = true;
                 }
-                markerShouldBeVisible = true;
             }
         }
 
@@ -238,7 +252,7 @@ namespace RoverScience
                 }
 
 
-                double srfAlt = DrawWaypoint.Instance.GetSurfaceAltitude(longitude, latitude);
+                double srfAlt = /*DrawWaypoint.Instance. */ GetSurfaceAltitude(longitude, latitude);
                 interestingObject.transform.position = FlightGlobals.currentMainBody.GetWorldSurfacePosition(latitude, longitude, srfAlt);
                 Log.Info("SpawnObject: latitude: " + latitude + ", longitude: " + longitude + ", surfaceAltitude: " + srfAlt);
 
@@ -258,17 +272,17 @@ namespace RoverScience
             }
         }
 
-        private void Update()
+        internal void Update()
         {
             if (markerShouldBeVisible)
             {
-                ChangeSpherewithDistance(RoverScience.Instance.rover);
+                ChangeSpherewithDistance(parentRoverScience.rover);
             }
         }
 
-        private void OnDestroy()
+        internal void OnDestroy()
         {
-            Destroy(marker);
+            GameObject.Destroy(marker);
             DestroyInterestingObject();
         }
     }

@@ -70,11 +70,14 @@ TODO
 	Added option to disable rock colliders
 	Added detection of ROCs and Craters (only active with Serenity)
 
+2.3.5.5
+	Change Anomolies module from loading 1x to loading every time flight scene is entered
+	Fixed issue with multiple rovers being in physics range causing exceptions
+
 
 TODO
-			reset closest ROC periodictly
+	reset closest ROC periodictly
 
-	Localize new text strings
 	Rename mod
 
 reloaded

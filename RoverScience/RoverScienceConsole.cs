@@ -16,14 +16,7 @@ namespace RoverScience
 
         private List<string> consolePrintOut = new List<string>();
 
-        private RoverScience roverScience
-        {
-            get
-            {
-                return RoverScience.Instance;
-            }
-
-        }
+        RoverScience roverScience;
 
         private Vessel Vessel
         {
@@ -37,14 +30,15 @@ namespace RoverScience
         {
             get
             {
-                return RoverScience.Instance.rover;
+                    return roverScience.rover;
             }
         }
 
 
-        public RoverScienceGUI()
+        public RoverScienceGUI(RoverScience rs)
         {
             Log.Info("RoverScienceGUI started");
+            roverScience = rs;
             consoleGUI.rect.width = 250;
             debugGUI.rect.width = 400;
             upgradeGUI.rect.width = 500;
@@ -59,6 +53,8 @@ namespace RoverScience
 
         public void DrawGUI()
         {
+            if (roverScience.part.vessel != FlightGlobals.ActiveVessel)
+                return;
             if (consoleGUI.isOpen)
             {
                 consoleGUI.rect = ClickThruBlocker.GUILayoutWindow(25639814, consoleGUI.rect, DrawRoverConsoleGUI, Localizer.Format("#LOC_RoverScience_GUI_TerminalTitle", roverScience.RSVersion)); //  Rover Terminal - <<1>>

@@ -33,7 +33,12 @@ namespace RoverScience
         public List<ROC_Class.SCANROC> closestUnanalyzedROCs = new List<ROC_Class.SCANROC>();
         const double CLOSE_RANGE = 10000f;
 
+        RoverScience roverScience;
 
+        public Rover(RoverScience rs)
+        {
+            roverScience = rs;
+        }
         public double DistanceFromLandingSpot
             => GeomLib.GetDistanceBetweenTwoPoints(Vessel.mainBody, location, landingSpot.location);
 
@@ -115,8 +120,8 @@ namespace RoverScience
 
         public void CalculateDistanceTraveled(double deltaTime)
         {
-            distanceTraveled += (RoverScience.Instance.vessel.srfSpeed) * deltaTime;
-            if (!scienceSpot.established) distanceTraveledTotal += (RoverScience.Instance.vessel.srfSpeed) * deltaTime;
+            distanceTraveled += (roverScience.vessel.srfSpeed) * deltaTime;
+            if (!scienceSpot.established) distanceTraveledTotal += (roverScience.vessel.srfSpeed) * deltaTime;
         }
 
         public void SetRoverLocation()

@@ -20,7 +20,13 @@ namespace RoverScience
         {
             get
             {
-                return RoverScience.Instance;
+                var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
+                if (m != null)
+                {
+
+                    return m;
+                }
+                return null;
             }
         }
 
@@ -28,7 +34,13 @@ namespace RoverScience
         {
             get
             {
-                return RoverScience.Instance.roverScienceGUI;
+                var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
+                if (m != null)
+                {
+                    return m.roverScienceGUI;
+                }
+                return null;
+
             }
         }
 

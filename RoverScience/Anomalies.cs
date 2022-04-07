@@ -5,10 +5,9 @@ using static RoverScience.InitLog;
 
 namespace RoverScience
 {
-    [KSPAddon(KSPAddon.Startup.Flight, true)]
+    [KSPAddon(KSPAddon.Startup.Flight, false)]
     public class Anomalies : MonoBehaviour
     {
-        // public static CelestialBody HomeWorld = 
         public static Anomalies Instance = null;
         public static Dictionary<string, List<Anomaly>> anomaliesDict = new Dictionary<string, List<Anomaly>>();
 
@@ -16,8 +15,6 @@ namespace RoverScience
         {
             public string name = "anomaly";
             public Coords location = new Coords();
-            //public double longitude = 0;
-            //public double latitude = 0;
             public string id = "NA";
             // surface altitude is determined by DrawWaypoint
         }
@@ -31,16 +28,21 @@ namespace RoverScience
 
         public bool HasCurrentAnomalyBeenAnalyzed()
         {
-            Rover rover = RoverScience.Instance.rover;
-            string closestAnomalyID = rover.closestAnomaly.id;
-            if (RoverScienceScenario.anomaliesAnalyzed.Contains(closestAnomalyID))
+            var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
+            if (m != null)
             {
-                return true;
-            } else
-            {
-                return false;
+                Rover rover = m.rover; //  RoverScience.Instance.rover;
+                string closestAnomalyID = rover.closestAnomaly.id;
+                if (RoverScienceScenario.anomaliesAnalyzed.Contains(closestAnomalyID))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-
+            return false;
         }
 
         public List<Anomaly> GetAnomalies(string bodyName)

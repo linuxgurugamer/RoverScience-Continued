@@ -8,11 +8,6 @@ namespace RoverScience
     [KSPScenario(ScenarioCreationOptions.AddToAllGames, new GameScenes[] { GameScenes.FLIGHT })]
     public class RoverScienceScenario : ScenarioModule
     {
-
-        //private RoverScienceDB DB;
-        //private RoverScience RS;
-        //private RoverScienceGUI.GUIClass ConsoleGUI;
-
         public bool loaded = false;
 
         public static int levelMaxDistance = 1;
@@ -76,10 +71,14 @@ namespace RoverScience
                 node.AddValue("console_x_y_show", string.Join(",", console_x_y_show.ToArray()));
             }
 
-            if (RoverScience.Instance.rover != null)
+            var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
+            if (m != null)
             {
-                RoverScienceDB.Instance.UpdateRoverScience();
-            }            
+                if (m.rover != null)
+                {
+                    RoverScienceDB.Instance.UpdateRoverScience();
+                }
+            }
         }
 
         public override void OnSave(ConfigNode node)

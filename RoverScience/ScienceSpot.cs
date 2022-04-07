@@ -308,8 +308,8 @@ namespace RoverScience
             Log.Info("lat/long: " + location.latitude + " " + location.longitude);
             Log.Info("==================");
 #endif
-            DrawWaypoint.Instance.SetMarkerLocation(location.longitude, location.latitude, spawningObject: !anomaly);
-            DrawWaypoint.Instance.ShowMarker();
+            roverScience.drawWaypoint.SetMarkerLocation(location.longitude, location.latitude, spawningObject: !anomaly);
+            roverScience.drawWaypoint.ShowMarker();
         }
 
 
@@ -354,8 +354,8 @@ namespace RoverScience
             Rover.ResetDistanceTraveled();
             Rover.distanceTraveledTotal = 0;
 
-            DrawWaypoint.Instance.HideMarker();
-            DrawWaypoint.Instance.DestroyInterestingObject();
+            roverScience.drawWaypoint.HideMarker();
+            roverScience.drawWaypoint.DestroyInterestingObject();
 
         }
     }

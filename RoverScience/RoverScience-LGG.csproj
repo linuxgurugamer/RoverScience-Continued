@@ -80,7 +80,6 @@
     <Compile Include="DebugSkipMenu.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="UpgradeGUI.cs" />
-    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="AssemblyVersion.tt">

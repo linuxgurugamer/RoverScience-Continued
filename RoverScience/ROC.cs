@@ -1,3 +1,29 @@
+/*
+ * Copyright (c) 2022
+ * LinuxGuruGamer [All rights reserved].
+ * 
+ * Redistribution and use in source and binary forms, with or without modification, 
+ * are permitted provided that the following conditions are met:
+ * 
+ * Redistributions of source code must retain the above copyright notice, this list of 
+ * conditions and the following disclaimer.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY LinuxGuruGamer “AS IS'' AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
+ * MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT 
+ * SHALL [Name of Organisation] BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) 
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * This code is derived from code provided by DMagic from the SCANsat mod for Kerbal Space Program.
+ * My thanks to DMagic for graciously granting permission (even if not needed) and providing pointers
+ * on how to use it
+ * 
+ */
+
 using System;
 using KSP.Localization;
 using System.Collections;
@@ -212,7 +238,7 @@ namespace RoverScience
 
                 //if (bodyRockDict.TryGetValue(vessel.mainBody.bodyName, out rocDict))
                 {
-                    if (ROC_Class.SerenityLoaded &&  closestRocDict.Count == 0)
+                    if (ROC_Class.SerenityLoaded && closestRocDict.Count == 0)
                     {
                         Log.Detail("No ROCs found for " + vessel.mainBody.name);
                         return null;
@@ -345,10 +371,15 @@ namespace RoverScience
                 // Fallback to brute force, only if nothing is close
                 Log.Detail("No close ROCs found for " + vessel.mainBody.name);
 
-                List<SCANROC> lst = bodyRockDict[vessel.mainBody.bodyName];
-                closestROC = ClosestROC(vessel, lst);
+                if (bodyRockDict.TryGetValue(vessel.mainBody.bodyName, out List<SCANROC> lst))
+                {
+                    closestROC = ClosestROC(vessel, lst);
 
-                closestRocs.Add(closestROC);
+                    closestRocs.Add(closestROC);
+
+                }
+                else
+                    closestROC = null;
 
             }
             return closestRocs;
@@ -356,9 +387,14 @@ namespace RoverScience
 
         public static bool HasCurrentROCBeenAnalyzed()
         {
-            Rover rover = RoverScience.Instance.rover;
-            string closestROCID = rover.closestROC.id.ToString();
-            return RoverScienceScenario.ROCsAnalyzed.Contains(closestROCID);
+            var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
+            if (m != null)
+            {
+                Rover rover = m.rover;
+                string closestROCID = rover.closestROC.id.ToString();
+                return RoverScienceScenario.ROCsAnalyzed.Contains(closestROCID);
+            }
+            else return false;
         }
 
 

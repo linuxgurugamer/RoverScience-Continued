@@ -55,7 +55,6 @@ namespace RoverScience
                 Log.Detail("ConsoleGUI not drawn - not active vessel");
                 return;
             }
-
             if (Rover.scienceSpot.established && Rover.ScienceSpotReached)
             {
                 consoleGUI.rect.height = 559;
@@ -84,6 +83,7 @@ namespace RoverScience
                 GUILayout.EndVertical();
                 return;
             }
+
             if (Vessel.srfSpeed > HighLogic.CurrentGame.Parameters.CustomParams<RSSettings>().maxSpeed - 1f)
             {
                 GUILayout.BeginHorizontal(); GUILayout.FlexibleSpace(); GUILayout.BeginHorizontal();
@@ -290,8 +290,9 @@ namespace RoverScience
                 {
                     Rover.scienceSpot.established = false;
                     Rover.ResetDistanceTraveled();
-                    DrawWaypoint.Instance.DestroyInterestingObject();
-                    DrawWaypoint.Instance.HideMarker();
+
+                        roverScience.drawWaypoint.DestroyInterestingObject();
+                        roverScience.drawWaypoint.HideMarker();
                     consolePrintOut.Clear();
 
                 }
@@ -348,7 +349,7 @@ namespace RoverScience
                 Rover.ResetDistanceTraveled();
                 consolePrintOut.Clear();
 
-                DrawWaypoint.Instance.HideMarker();
+                    roverScience.drawWaypoint.HideMarker();
 
                 consoleGUI.Hide();
                 upgradeGUI.Hide();
