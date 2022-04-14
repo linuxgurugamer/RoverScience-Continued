@@ -22,7 +22,6 @@ namespace RoverScience
 
         // Not necessarily updated per build. Mostly updated per major commits
         public readonly string RSVersion = typeof(RoverScience).Assembly.GetName().Version.ToString();
-        //public  RoverScience Instance = null;
         public  CelestialBody HomeWorld;
 
         public System.Random rand = new System.Random();
@@ -55,9 +54,10 @@ namespace RoverScience
             }
         }
 
+        public RoverScienceDB roverScienceDB;
         private RoverScienceDB DB
         {
-            get { return RoverScienceDB.Instance; }
+            get { return roverScienceDB; }
         }
 
 
@@ -140,6 +140,7 @@ namespace RoverScience
             {
                 drawWaypoint = new DrawWaypoint(this);
                 roverScienceGUI = new RoverScienceGUI(this);
+                roverScienceDB = new RoverScienceDB(this);
             }
              GameEvents.onHideUI.Add(onHideUI);
             GameEvents.onShowUI.Add(onShowUI);

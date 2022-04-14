@@ -4,43 +4,29 @@ using System.Linq;
 using UnityEngine;
 using static RoverScience.InitLog;
 
+#if true
 namespace RoverScience
 {
-    [KSPAddon(KSPAddon.Startup.Flight, true)]
-    public class RoverScienceDB : MonoBehaviour
+    //[KSPAddon(KSPAddon.Startup.Flight, true)]
+    public class RoverScienceDB // : MonoBehaviour
     {
-        public static RoverScienceDB Instance;
-
-        public RoverScienceDB()
+        public RoverScienceDB(RoverScience rs)
         {
-            Instance = this;
+            roverScience = rs;
         }
+
+        RoverScience roverScience;
 
         private RoverScience RoverScience
         {
-            get
-            {
-                var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
-                if (m != null)
-                {
-
-                    return m;
-                }
-                return null;
-            }
+            get { return roverScience; }
         }
 
         private RoverScienceGUI GUI
         {
             get
             {
-                var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
-                if (m != null)
-                {
-                    return m.roverScienceGUI;
-                }
-                return null;
-
+                return roverScience.roverScienceGUI;
             }
         }
 
@@ -62,7 +48,6 @@ namespace RoverScience
                 {
                     Log.Error($"Error while parsing {RoverScienceScenario.console_x_y_show}", e);
                 }
-                //RoverScienceScenario.anomaliesAnalyzed = RoverScienceScenario.anomaliesAnalyzed;
                 Log.Detail("Successfully updated RoverScience");
             }
         }
@@ -80,7 +65,6 @@ namespace RoverScience
             RoverScienceScenario.console_x_y_show.Add(GUI.consoleGUI.rect.y.ToString());
             RoverScienceScenario.console_x_y_show.Add(GUI.consoleGUI.isOpen.ToString());
 
-            //RoverScienceScenario.anomaliesAnalyzed = RoverScience.rover.anomaliesAnalyzed;
             Log.Detail("roverScience.rover.anomaliesAnalyzed: " + RoverScienceScenario.anomaliesAnalyzed);
 
             Log.Detail("Successfully updated DB");
@@ -101,3 +85,5 @@ namespace RoverScience
         }
     }
 }
+
+#endif

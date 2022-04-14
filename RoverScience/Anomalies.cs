@@ -26,12 +26,9 @@ namespace RoverScience
             LoadAnomalies();
         }
 
-        public bool HasCurrentAnomalyBeenAnalyzed()
+        public bool HasCurrentAnomalyBeenAnalyzed(RoverScience roverScience)
         {
-            var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
-            if (m != null)
-            {
-                Rover rover = m.rover; //  RoverScience.Instance.rover;
+                Rover rover = roverScience.rover; //  RoverScience.Instance.rover;
                 string closestAnomalyID = rover.closestAnomaly.id;
                 if (RoverScienceScenario.anomaliesAnalyzed.Contains(closestAnomalyID))
                 {
@@ -41,8 +38,6 @@ namespace RoverScience
                 {
                     return false;
                 }
-            }
-            return false;
         }
 
         public List<Anomaly> GetAnomalies(string bodyName)

@@ -74,9 +74,9 @@ namespace RoverScience
             var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
             if (m != null)
             {
-                if (m.rover != null)
+                if (m.roverScienceDB != null)
                 {
-                    RoverScienceDB.Instance.UpdateRoverScience();
+                    m.roverScienceDB.UpdateRoverScience();
                 }
             }
         }

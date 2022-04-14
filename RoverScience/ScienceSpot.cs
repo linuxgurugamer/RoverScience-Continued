@@ -174,12 +174,12 @@ namespace RoverScience
             var maxDistance = roverScience.GetUpgradeValue(RSUpgrade.maxDistance, currentLevel);
 
             // Once distance traveled passes the random check distance
-            if ((Rover.DistanceToClosestAnomaly <= maxDistance) && (!Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed()))
+            if ((Rover.DistanceToClosestAnomaly <= maxDistance) && (!Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed(roverScience)))
             {
                 SetLocation(3, Rover.closestAnomaly.location.longitude, Rover.closestAnomaly.location.latitude, anomaly: true);
                 Rover.ResetDistanceTraveled();
             }
-            else if (ROC_Class.SerenityLoaded && (Rover.DistanceToClosestROC <= maxDistance) && (!ROC_Class.HasCurrentROCBeenAnalyzed()))
+            else if (ROC_Class.SerenityLoaded && (Rover.DistanceToClosestROC <= maxDistance) && (!ROC_Class.HasCurrentROCBeenAnalyzed(roverScience)))
             {
                 SetLocation(4, Rover.closestROC.location.longitude, Rover.closestROC.location.latitude, anomaly: true);
                 Rover.ResetDistanceTraveled();

@@ -385,16 +385,11 @@ namespace RoverScience
             return closestRocs;
         }
 
-        public static bool HasCurrentROCBeenAnalyzed()
+        public static bool HasCurrentROCBeenAnalyzed(RoverScience roverScience)
         {
-            var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
-            if (m != null)
-            {
-                Rover rover = m.rover;
+                Rover rover = roverScience.rover;
                 string closestROCID = rover.closestROC.id.ToString();
                 return RoverScienceScenario.ROCsAnalyzed.Contains(closestROCID);
-            }
-            else return false;
         }
 
 

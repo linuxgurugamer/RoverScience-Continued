@@ -39,7 +39,7 @@ namespace RoverScience
             GUIBreakline();
             GUILayout.Label("Closest Anomaly ID: " + roverScience.rover.closestAnomaly.id);
             GUILayout.Label("Closest Anomaly Name: " + roverScience.rover.closestAnomaly.name);
-            GUILayout.Label("Has current anomaly been analyzed? " + "[" + Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed() + "]");
+            GUILayout.Label("Has current anomaly been analyzed? " + "[" + Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed(roverScience) + "]");
 
 			if (ROC_Class.SerenityLoaded)
 			{
@@ -51,7 +51,7 @@ namespace RoverScience
 				{
 					GUILayout.Label("Closest ROC ID: " + roverScience.rover.closestROC.id);
 					GUILayout.Label("Closest ROC Name: " + roverScience.rover.closestROC.name);
-					GUILayout.Label("Has current ROC been analyzed? " + "[" + ROC_Class.HasCurrentROCBeenAnalyzed() + "]");
+					GUILayout.Label("Has current ROC been analyzed? " + "[" + ROC_Class.HasCurrentROCBeenAnalyzed(roverScience) + "]");
 				}
 			}
 

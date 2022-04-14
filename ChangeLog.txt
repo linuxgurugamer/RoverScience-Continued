@@ -71,9 +71,12 @@ TODO
 	Added detection of ROCs and Craters (only active with Serenity)
 
 2.3.5.5
-	Change Anomolies module from loading 1x to loading every time flight scene is entered
+	Change Anomalies  module from loading 1x to loading every time flight scene is entered
 	Fixed issue with multiple rovers being in physics range causing exceptions
 
+2.3.5.6
+	Removed all calls to FindPartModuleImplementing<>
+	RoverScienceDB is now created as a child of RoverScience
 
 TODO
 	reset closest ROC periodictly

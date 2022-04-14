@@ -71,13 +71,13 @@ namespace RoverScience
             => (scienceSpot.established && DistanceToClosestAnomaly <= scienceSpot.minDistance);
 
         public bool AnomalyPresent
-            => ((DistanceToClosestAnomaly <= 100) && !Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed());
+            => ((DistanceToClosestAnomaly <= 100) && !Anomalies.Instance.HasCurrentAnomalyBeenAnalyzed(roverScience));
 
         public bool ROCSpotReached
     => (scienceSpot.established && DistanceToClosestROC <= scienceSpot.minDistance);
 
         public bool ROCPresent
-            => ((DistanceToClosestROC <= 100) && !ROC_Class.HasCurrentROCBeenAnalyzed());
+            => ((DistanceToClosestROC <= 100) && !ROC_Class.HasCurrentROCBeenAnalyzed(roverScience));
 
 
 
