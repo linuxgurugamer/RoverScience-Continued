@@ -78,7 +78,7 @@ TODO
 	Removed all calls to FindPartModuleImplementing<>
 	RoverScienceDB is now created as a child of RoverScience
 
-2.3.5.7 (unreleased)
+2.3.5.7 
 	Fixed 2 nullrefs in editor
 	Fixed empty window when science detected
 	Fixed nullref when science is gathered
