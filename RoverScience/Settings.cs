@@ -29,11 +29,11 @@ namespace RoverScience
         //public bool useKSPskin = true;
 
 
-        [GameParameters.CustomFloatParameterUI("Require wheels to be touching the ground",
+        [GameParameters.CustomFloatParameterUI("Wheels must be touching the ground",
             toolTip = "At least one wheel will need to be touching the ground for the sensors to be active")]
         public bool requireWheelTouching = true;
 
-        [GameParameters.CustomFloatParameterUI("Maximum speed where sensors are active", minValue = 5f, maxValue = 40f, stepCount = 351, displayFormat = "F1")]
+        [GameParameters.CustomFloatParameterUI("Sensor Maximum speed", minValue = 5f, maxValue = 40f, stepCount = 351, displayFormat = "F1")]
         public float maxSpeed = 10f;
 
 
@@ -49,7 +49,7 @@ namespace RoverScience
             toolTip = "Frequency of occurrance is multiplied by this (higher means more distance between occurrances)")]
         public float scaledScienceOccurrance = 0f;
 
-        [GameParameters.CustomFloatParameterUI("Minimum distance between science points", minValue = 500f, maxValue = 20000f, stepCount = 19501, displayFormat = "F0")]
+        [GameParameters.CustomFloatParameterUI("Minimum distance between sci points", minValue = 500f, maxValue = 20000f, stepCount = 19501, displayFormat = "F0")]
         public float minDistanceBetweenData = 500f;
 
         [GameParameters.CustomParameterUI("Show Science dome",

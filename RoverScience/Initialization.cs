@@ -23,7 +23,7 @@ namespace RoverScience
         {
             Log = new KSP_Log.Log("RoverScience"
 #if DEBUG
-                , KSP_Log.Log.LEVEL.INFO
+                , KSP_Log.Log.LEVEL.DETAIL
 #endif
                 );
         }

@@ -22,7 +22,7 @@ namespace RoverScience
 
         // Not necessarily updated per build. Mostly updated per major commits
         public readonly string RSVersion = typeof(RoverScience).Assembly.GetName().Version.ToString();
-        public  CelestialBody HomeWorld;
+        public CelestialBody HomeWorld;
 
         public System.Random rand = new System.Random();
         public ModuleScienceContainer container;
@@ -74,7 +74,7 @@ namespace RoverScience
             {
                 if (HighLogic.LoadedSceneIsFlight)
                 {
-                return vessel;
+                    return vessel;
                 }
                 else
                 {
@@ -135,14 +135,16 @@ namespace RoverScience
 
         public void Start()
         {
-            Log.Info("RoverScience.Start, vessel: " + this.vessel.id);
             if (HighLogic.LoadedSceneIsFlight)
             {
+                Log.Info("RoverScience.Start, vessel: " + this.vessel.id);
                 drawWaypoint = new DrawWaypoint(this);
                 roverScienceGUI = new RoverScienceGUI(this);
                 roverScienceDB = new RoverScienceDB(this);
             }
-             GameEvents.onHideUI.Add(onHideUI);
+            else
+                Log.Info("RoverScience.Start");
+            GameEvents.onHideUI.Add(onHideUI);
             GameEvents.onShowUI.Add(onShowUI);
             GameEvents.onGamePause.Add(onHideUI);
             GameEvents.onGameUnpause.Add(onShowUI);
@@ -169,7 +171,7 @@ namespace RoverScience
             rover.SetClosestROC();
             yield return null;
         }
-        
+
 #if true
         /// <summary>
         /// Updates the marker location 10x/sec, called by InvokeRepeatig
@@ -177,7 +179,7 @@ namespace RoverScience
         void UpdateMarkerPositionInvoked()
         {
             if (HighLogic.LoadedSceneIsFlight && drawWaypoint.InterestingObjectExists)
-                drawWaypoint.SetMarkerLocation(rover.scienceSpot.location.longitude, rover.scienceSpot.location.latitude, spawningObject: false, update:true);
+                drawWaypoint.SetMarkerLocation(rover.scienceSpot.location.longitude, rover.scienceSpot.location.latitude, spawningObject: false, update: true);
         }
 #endif
 
@@ -202,7 +204,7 @@ namespace RoverScience
         }
         public void OnGUI()
         {
-            if (!hideUI)
+            if (!hideUI && HighLogic.LoadedSceneIsFlight)
                 roverScienceGUI.DrawGUI();
         }
 
@@ -232,7 +234,7 @@ namespace RoverScience
             {
                 if (IsPrimary)
                 {
-                    Log.Info("Initiated! Version: " + RSVersion + ", vessel: " + this.vessel.id); 
+                    Log.Info("Initiated! Version: " + RSVersion + ", vessel: " + this.vessel.id);
 
                     //Instance = this;
 
@@ -293,7 +295,7 @@ namespace RoverScience
 
             var c1 = value * (1 - (1 - confidence) * rnd);
             var c2 = (1 - confidence) * (500 * rnd - 250);
-            var c3 =  c1 + c2;
+            var c3 = c1 + c2;
 
             Log.Info("AdjustedPotentialGenerated, confidence: " + confidence + ", value: " + value + ", rnd: " + rnd + ", c3: " + c3);
 
@@ -400,7 +402,8 @@ namespace RoverScience
                     ScienceData sd = StoreScience(container, sciSubject, sciData);
                     if (sd != null)
                     {
-                        container.ReviewDataItem(StoreScience(container, sciSubject, sciData));
+                        //container.ReviewDataItem(StoreScience(container, sciSubject, sciData));
+                        container.ReviewDataItem(sd);
                         amountOfTimesAnalyzed++;
                         Log.Detail("Science retrieved! - " + sciData);
                     }
@@ -798,7 +801,7 @@ namespace RoverScience
                     for (int p1 = 0; p1 < this.Vessel.parts.Count; p1++)
                     {
                         Part part = this.Vessel.parts[p1];
-                    
+
                         if (part.Modules.Contains(this.ClassID))
                         {
                             if (this.part == part)
