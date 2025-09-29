@@ -31,9 +31,14 @@ namespace RoverScience
 
         public DrawWaypoint drawWaypoint;
 
+#if false
+        [Persistent]
         public int levelMaxDistance = 1;
+        [Persistent]
         public int levelPredictionAccuracy = 1;
+        [Persistent]
         public int levelAnalyzedDecay = 2;
+#endif
         public readonly int maximum_levelMaxDistance = 5;
         public readonly int maximum_predictionAccuracy = 5;
         public readonly int maximum_levelAnalyzedDecay = 5;
@@ -42,7 +47,7 @@ namespace RoverScience
         {
             get
             {
-                return GetUpgradeValue(RSUpgrade.predictionAccuracy, levelPredictionAccuracy);
+                return GetUpgradeValue(RSUpgrade.predictionAccuracy, RoverScienceScenario. levelPredictionAccuracy);
             }
         }
 
@@ -50,7 +55,7 @@ namespace RoverScience
         {
             get
             {
-                return GetUpgradeValue(RSUpgrade.maxDistance, levelMaxDistance);
+                return GetUpgradeValue(RSUpgrade.maxDistance, RoverScienceScenario. levelMaxDistance);
             }
         }
 
@@ -455,7 +460,7 @@ namespace RoverScience
             // Always subject to adjustment
             //double scalar = (1.20 * Math.Exp (-0.9 * (numberOfTimes - levelAnalyzedDecay)));
 
-            double scalar = (1.20 * Math.Exp(-0.4 * (numberOfTimes - levelAnalyzedDecay)));
+            double scalar = (1.20 * Math.Exp(-0.4 * (numberOfTimes - RoverScienceScenario.levelAnalyzedDecay)));
             // decay pattern as such:  0.8, 0.54, 0.36, 0.24, 0.16, 0.1
 
             if (scalar > 1)
@@ -576,7 +581,7 @@ namespace RoverScience
             switch (upgrade)
             {
                 case (RSUpgrade.maxDistance):
-                    if (levelMaxDistance >= maximum_levelMaxDistance)
+                    if (RoverScienceScenario.levelMaxDistance >= maximum_levelMaxDistance)
                     {
                         if (nextLevel)
                             return "";
@@ -588,7 +593,7 @@ namespace RoverScience
                     }
 
                 case (RSUpgrade.predictionAccuracy):
-                    if (levelPredictionAccuracy >= maximum_predictionAccuracy)
+                    if (RoverScienceScenario.levelPredictionAccuracy >= maximum_predictionAccuracy)
                     {
                         if (nextLevel)
                             return "";
@@ -600,7 +605,7 @@ namespace RoverScience
                     }
 
                 case (RSUpgrade.analyzedDecay):
-                    if (levelAnalyzedDecay >= maximum_levelAnalyzedDecay)
+                    if (RoverScienceScenario.levelAnalyzedDecay >= maximum_levelAnalyzedDecay)
                     {
                         return Localizer.GetStringByTag("#LOC_RoverScience_GUI_Max"); // "MAX";
                     }
@@ -671,11 +676,11 @@ namespace RoverScience
             switch (upgradeType)
             {
                 case (RSUpgrade.maxDistance):
-                    return levelMaxDistance;
+                    return RoverScienceScenario.levelMaxDistance;
                 case (RSUpgrade.predictionAccuracy):
-                    return levelPredictionAccuracy;
+                    return RoverScienceScenario.levelPredictionAccuracy;
                 case (RSUpgrade.analyzedDecay):
-                    return levelAnalyzedDecay;
+                    return RoverScienceScenario.levelAnalyzedDecay;
                 default:
                     return -1;
             }
@@ -685,17 +690,17 @@ namespace RoverScience
         {
             if (upgradeType == RSUpgrade.maxDistance)
             {
-                levelMaxDistance = newValue;
+                RoverScienceScenario.levelMaxDistance = newValue;
             }
             else
             if (upgradeType == RSUpgrade.predictionAccuracy)
             {
-                levelPredictionAccuracy = newValue;
+                RoverScienceScenario.levelPredictionAccuracy = newValue;
             }
             else
             if (upgradeType == RSUpgrade.analyzedDecay)
             {
-                levelAnalyzedDecay = newValue;
+                RoverScienceScenario.levelAnalyzedDecay = newValue;
             }
         }
 
@@ -740,18 +745,18 @@ namespace RoverScience
             // UPGRADE METHOD
             if (upgradeType == RSUpgrade.maxDistance)
             {
-                levelMaxDistance++;
-                Log.Detail("Upgraded levelMaxDistance. Now level: " + levelMaxDistance);
+                RoverScienceScenario.levelMaxDistance++;
+                Log.Detail("Upgraded levelMaxDistance. Now level: " + RoverScienceScenario.levelMaxDistance);
             }
             else if (upgradeType == RSUpgrade.predictionAccuracy)
             {
-                levelPredictionAccuracy++;
-                Log.Detail("Upgraded predictionAccuracy. Now level: " + levelPredictionAccuracy);
+                RoverScienceScenario.levelPredictionAccuracy++;
+                Log.Detail("Upgraded predictionAccuracy. Now level: " + RoverScienceScenario.levelPredictionAccuracy);
             }
             else if (upgradeType == RSUpgrade.analyzedDecay)
             {
-                levelAnalyzedDecay++;
-                Log.Detail("Upgraded levelAnalyzedDecay. Now level: " + levelAnalyzedDecay);
+                RoverScienceScenario.levelAnalyzedDecay++;
+                Log.Detail("Upgraded levelAnalyzedDecay. Now level: " + RoverScienceScenario.levelAnalyzedDecay);
             }
 
             ResearchAndDevelopment.Instance.CheatAddScience(-nextCost);

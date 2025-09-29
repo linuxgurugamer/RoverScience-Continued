@@ -19,9 +19,15 @@ namespace RoverScience
         public static List<string> ROCsAnalyzed = new List<string>();
         public override void OnLoad(ConfigNode node)
         {
+
             //if (RoverScience.Instance == null) return; // do not do if RoverScience not do
 
             Log.Detail("RoverScienceScenario OnLoad @" + DateTime.Now);
+            if (node == null)
+            {
+                Log.Info("RoverScienceScenario.OnLoad, node is null");
+                return;
+            }
 
             //DB  = RoverScienceDB.Instance;
             //RS = RoverScience.Instance;
@@ -70,13 +76,16 @@ namespace RoverScience
             {
                 node.AddValue("console_x_y_show", string.Join(",", console_x_y_show.ToArray()));
             }
-
-            var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
-            if (m != null)
+            Log.Error("RoverScienceScenario.OnLoad 5");
+            if (FlightGlobals.ActiveVessel != null)
             {
-                if (m.roverScienceDB != null)
+                var m = FlightGlobals.ActiveVessel.FindPartModuleImplementing<RoverScience>();
+                if (m != null)
                 {
-                    m.roverScienceDB.UpdateRoverScience();
+                    if (m.roverScienceDB != null)
+                    {
+                        m.roverScienceDB.UpdateRoverScience();
+                    }
                 }
             }
         }

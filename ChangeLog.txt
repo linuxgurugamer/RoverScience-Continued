@@ -1,7 +1,5 @@
 Changelog
 
-TODO
-
 2.3.5.1 Alpha
 	Adoption by Linuxgurugamer
 	Added license file
@@ -84,6 +82,12 @@ TODO
 	Fixed nullref when science is gathered
 	Shortened settings labels 
 	Replaced several GUILayout.Horizontal() with using (new GUILayout.HorizontalScope())
+
+2.3.5.8
+	Fixed nullref when entering flight
+	Added rover contracts
+	Added dependency for SpaceTuxSA
+	Fixed upgrades not being saved
 
 TODO
 	reset closest ROC periodictly

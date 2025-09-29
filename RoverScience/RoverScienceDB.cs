@@ -33,9 +33,9 @@ namespace RoverScience
         public void UpdateRoverScience()
         {
             Log.Info("UpdateRoverScience, levelMaxDistance: " + RoverScienceScenario.levelMaxDistance + ", levelPredictionAccuracy: " + RoverScienceScenario.levelPredictionAccuracy + ", levelAnalyzedDecay: " + RoverScienceScenario.levelAnalyzedDecay);
-            RoverScience.levelMaxDistance = RoverScienceScenario.levelMaxDistance;
-            RoverScience.levelPredictionAccuracy = RoverScienceScenario.levelPredictionAccuracy;
-            RoverScience.levelAnalyzedDecay = RoverScienceScenario.levelAnalyzedDecay;
+            //RoverScienceScenario.levelMaxDistance = RoverScienceScenario.levelMaxDistance;
+            //RoverScienceScenario.levelPredictionAccuracy = RoverScienceScenario.levelPredictionAccuracy;
+            //RoverScienceScenario.levelAnalyzedDecay = RoverScienceScenario.levelAnalyzedDecay;
 
             if (RoverScienceScenario.console_x_y_show.Any())
             {
@@ -56,9 +56,9 @@ namespace RoverScience
         {
             DebugPrintAll("update[DB] - debugPrintAll");
 
-            RoverScienceScenario.levelMaxDistance = RoverScience.levelMaxDistance;
-            RoverScienceScenario.levelPredictionAccuracy = RoverScience.levelPredictionAccuracy;
-            RoverScienceScenario.levelAnalyzedDecay = RoverScience.levelAnalyzedDecay;
+            //RoverScienceScenario.levelMaxDistance = RoverScienceScenario.levelMaxDistance;
+            //RoverScienceScenario.levelPredictionAccuracy = RoverScienceScenario.levelPredictionAccuracy;
+            //RoverScienceScenario.levelAnalyzedDecay = RoverScienceScenario.levelAnalyzedDecay;
 
             RoverScienceScenario.console_x_y_show = new List<string>();
             RoverScienceScenario.console_x_y_show.Add(GUI.consoleGUI.rect.x.ToString());

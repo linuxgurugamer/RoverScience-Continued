@@ -19,7 +19,7 @@ namespace RoverScience
 			GUILayout.Label ("distTrav: " + Math.Round(Rover.distanceTraveled));
 			GUILayout.Label ("distTravTotal: " + Math.Round(Rover.distanceTraveledTotal));
 			GUIBreakline ();
-            GUILayout.Label("levelAnalyzedDecay: " + roverScience.levelAnalyzedDecay);
+            GUILayout.Label("levelAnalyzedDecay: " + RoverScienceScenario.levelAnalyzedDecay);
             GUILayout.Label ("currentScalarDecay: " + roverScience.ScienceDecayScalar);
 			GUILayout.Label ("scienceDistanceScalarBoost: " + roverScience.scienceMaxRadiusBoost);
 
@@ -107,59 +107,59 @@ namespace RoverScience
 			GUIBreakline ();
 
 
-			GUILayout.Label("Dist. Upgraded Level: " + roverScience.levelMaxDistance);
+			GUILayout.Label("Dist. Upgraded Level: " + RoverScienceScenario.levelMaxDistance);
 
 			GUILayout.BeginHorizontal ();
 			if (GUILayout.Button ("-")) {
-				if (roverScience.levelMaxDistance > 1)
-					roverScience.levelMaxDistance--;
+				if (RoverScienceScenario.levelMaxDistance > 1)
+                    RoverScienceScenario.levelMaxDistance--;
 			}
 
 			if (GUILayout.Button ("+")) {
-				roverScience.levelMaxDistance++;
+                RoverScienceScenario.levelMaxDistance++;
 			}
 
 			if (GUILayout.Button("0")){
-				roverScience.levelMaxDistance = 1;
+                RoverScienceScenario.levelMaxDistance = 1;
 			}
 			GUILayout.EndHorizontal ();
 
 
 
-			GUILayout.Label("Acc. Upgraded Level: " + roverScience.levelPredictionAccuracy);
+			GUILayout.Label("Acc. Upgraded Level: " + RoverScienceScenario.levelPredictionAccuracy);
 
 			GUILayout.BeginHorizontal ();
 			if (GUILayout.Button ("-")) {
-				if (roverScience.levelPredictionAccuracy > 1)
-					roverScience.levelPredictionAccuracy--;
+				if (RoverScienceScenario.levelPredictionAccuracy > 1)
+                    RoverScienceScenario.levelPredictionAccuracy--;
 			}
 
 			if (GUILayout.Button ("+")) {
-				roverScience.levelPredictionAccuracy++;
+                RoverScienceScenario.levelPredictionAccuracy++;
 			}
 
 			if (GUILayout.Button("0")){
-				roverScience.levelPredictionAccuracy = 1;
+                RoverScienceScenario.levelPredictionAccuracy = 1;
 			}
 			GUILayout.EndHorizontal ();
 
-            GUILayout.Label("levelAnalyzedDecay: " + roverScience.levelAnalyzedDecay);
+            GUILayout.Label("levelAnalyzedDecay: " + RoverScienceScenario.levelAnalyzedDecay);
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("-"))
             {
-                if (roverScience.levelAnalyzedDecay > 1)
-                    roverScience.levelAnalyzedDecay--;
+                if (RoverScienceScenario.levelAnalyzedDecay > 1)
+                    RoverScienceScenario.levelAnalyzedDecay--;
             }
 
             if (GUILayout.Button("+"))
             {
-                roverScience.levelAnalyzedDecay++;
+                RoverScienceScenario.levelAnalyzedDecay++;
             }
 
             if (GUILayout.Button("0"))
             {
-                roverScience.levelAnalyzedDecay = 1;
+                RoverScienceScenario.levelAnalyzedDecay = 1;
             }
             GUILayout.EndHorizontal();
 
