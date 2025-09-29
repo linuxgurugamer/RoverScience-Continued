@@ -1,0 +1,22 @@
+{
+    "spec_version": "v1.34",
+    "identifier": "RoverScienceCont",
+    "name": "Rover Science Continued",
+    "depends": [
+        {
+            "name": "ToolbarController"
+        },
+        {
+            "name": "ClickThroughBlocker"
+        },
+        {
+            "name": "SpaceTuxLibrary"
+        },
+        {
+            "name": "ModuleManager"
+        },
+        {
+            "name": "SpacetuxSA"
+        }
+    ]
+}
