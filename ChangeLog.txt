@@ -1,5 +1,61 @@
 Changelog
 
+2.3.5.9 
+	Renamed DLL for better CKAN compatibility
+
+2.3.5.8
+	Fixed nullref when entering flight
+	Added rover contracts
+	Added dependency for SpaceTuxSA
+	Fixed upgrades not being saved
+	Added local ckan file to ensure CKAN dependency only applies to this version
+
+2.3.5.7 
+	Fixed 2 nullrefs in editor
+	Fixed empty window when science detected
+	Fixed nullref when science is gathered
+	Shortened settings labels 
+	Replaced several GUILayout.Horizontal() with using (new GUILayout.HorizontalScope())
+
+2.3.5.6
+	Removed all calls to FindPartModuleImplementing<>
+	RoverScienceDB is now created as a child of RoverScience
+
+2.3.5.5
+	Change Anomalies  module from loading 1x to loading every time flight scene is entered
+	Fixed issue with multiple rovers being in physics range causing exceptions
+
+2.3.5.4 
+	RemoteTech patch added
+	Changed RandomConsolePrintOuts to loop through the random saying instead of individual lines
+	Localized new strings, translations done using Google Translate
+	Added option to show/hide science dome
+	Made rock colliders, defaulted to active
+	Added option to disable rock colliders
+	Added detection of ROCs and Craters (only active with Serenity)
+
+2.3.5.3
+	Fixed nullrefs in editor
+	Moved initialization of GUIStyles from the ConsoleGUI to Static, now only get initialized once. Fixes memory leak and improves performance
+	Added settings for maxspeed and requireWheelsToTouch
+	Added warning of approaching max speed
+	Fixed upgrades not being saved properly
+	Changed method for fixing the science dome location
+	Added Scaled Science, calculated when game first starts, adjustable in Settings
+	Added ScaledDetection, calculated when game first starts, adjustable in Settings
+	Fixed spot being displayed at altitude
+	Added scaledScienceOccurrance
+	Added minDistanceBetweenData
+	Added new sayings for random text
+	Fixed localization of the Science Too Low string
+
+2.3.5.2 Alpha
+	Fixed displayed science dome location jumping when the rover got too far away (about 400-500m)
+    Replaced all  marker.GetComponent<MeshRenderer>() with a single call when marker is created
+	Replaced all "foreach" with "for"
+	Fixed check for wheel count to look for string "wheel" instead of ModuleSheelBase
+	Disabled analyze button if vessel/rover is moving
+
 2.3.5.1 Alpha
 	Adoption by Linuxgurugamer
 	Added license file
@@ -37,58 +93,6 @@ Changelog
 					70-200		Normal
 					30-70		Low
 					< 30		VeryLow
-2.3.5.2 Alpha
-	Fixed displayed science dome location jumping when the rover got too far away (about 400-500m)
-    Replaced all  marker.GetComponent<MeshRenderer>() with a single call when marker is created
-	Replaced all "foreach" with "for"
-	Fixed check for wheel count to look for string "wheel" instead of ModuleSheelBase
-	Disabled analyze button if vessel/rover is moving
-
-2.3.5.3
-	Fixed nullrefs in editor
-	Moved initialization of GUIStyles from the ConsoleGUI to Static, now only get initialized once. Fixes memory leak and improves performance
-	Added settings for maxspeed and requireWheelsToTouch
-	Added warning of approaching max speed
-	Fixed upgrades not being saved properly
-	Changed method for fixing the science dome location
-	Added Scaled Science, calculated when game first starts, adjustable in Settings
-	Added ScaledDetection, calculated when game first starts, adjustable in Settings
-	Fixed spot being displayed at altitude
-	Added scaledScienceOccurrance
-	Added minDistanceBetweenData
-	Added new sayings for random text
-	Fixed localization of the Science Too Low string
-
-2.3.5.4 
-	RemoteTech patch added
-	Changed RandomConsolePrintOuts to loop through the random saying instead of individual lines
-	Localized new strings, translations done using Google Translate
-	Added option to show/hide science dome
-	Made rock colliders, defaulted to active
-	Added option to disable rock colliders
-	Added detection of ROCs and Craters (only active with Serenity)
-
-2.3.5.5
-	Change Anomalies  module from loading 1x to loading every time flight scene is entered
-	Fixed issue with multiple rovers being in physics range causing exceptions
-
-2.3.5.6
-	Removed all calls to FindPartModuleImplementing<>
-	RoverScienceDB is now created as a child of RoverScience
-
-2.3.5.7 
-	Fixed 2 nullrefs in editor
-	Fixed empty window when science detected
-	Fixed nullref when science is gathered
-	Shortened settings labels 
-	Replaced several GUILayout.Horizontal() with using (new GUILayout.HorizontalScope())
-
-2.3.5.8
-	Fixed nullref when entering flight
-	Added rover contracts
-	Added dependency for SpaceTuxSA
-	Fixed upgrades not being saved
-	Added local ckan file to ensure CKAN dependency only applies to this version
 
 TODO
 	reset closest ROC periodictly
