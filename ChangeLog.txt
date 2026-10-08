@@ -1,5 +1,9 @@
 Changelog
 
+2.3.5.10
+	Thanks to github user @celino for this:
+		Fix the rover expedition contract failing to load
+
 2.3.5.9 
 	Renamed DLL for better CKAN compatibility
 
