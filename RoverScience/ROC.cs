@@ -225,6 +225,12 @@ namespace RoverScience
             InvokeRepeating("CheckForNewROCs", 60f, 60f);
         }
 
+        public void OnDestroy()
+        {
+            Log.Info("ROC.OnDestroy");
+            GameEvents.VesselSituation.onLand.Remove(this.CallbackOnLand);
+        }
+
 
 
         public static SCANROC ClosestROC(Vessel vessel, List<ROC_Class.SCANROC> closestRocDict)
