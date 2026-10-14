@@ -155,7 +155,7 @@ namespace RoverScience
             GameEvents.onGameUnpause.Add(onShowUI);
 
             InvokeRepeating("UpdateMarkerPositionInvoked", 0.1f, 0.1f);
-            if (ROC_Class.SerenityLoaded)
+            if (HighLogic.LoadedSceneIsFlight && ROC_Class.SerenityLoaded)
                 StartCoroutine(ScheduleClosestROCCheck());
         }
 
